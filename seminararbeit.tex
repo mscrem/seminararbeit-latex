@@ -1,0 +1,26 @@
+% !TEX TS-program = xelatex
+\documentclass[12pt]{article}
+\input{settings/packages.tex} % Einstellungen in dieser Datei ändern
+
+\pagenumbering{gobble}
+
+\begin{document}
+\input{settings/cover.tex} % Deckblatt in dieser Datei bearbeiten
+\pagenumbering{arabic} % Seitenzahl beginnt hier
+\setcounter{page}{1}
+
+% Hier beginnt die eigentliche Arbeit
+% Normales Zitat:  \parencite[Seite(n)]{cite-key}
+% Kurzzitat: \shortcite[Stelle]{cite-key}
+% Blockzitate:
+% \begin{displayquote}
+%	\enquote{Inhalt} % direktes Zitat¸
+% \end{displayquote}
+
+\section{Einleitung}
+
+
+\newpage
+\printbibliography[heading=bibintoc]
+\end{document}
+

@@ -1,0 +1,114 @@
+% packages.tex
+
+% Sprache 'english', 'ngerman', ...
+\usepackage[ngerman]{babel}
+
+% Schriftart
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+% Bessere Absatzformatierung
+\usepackage{microtype}
+\sloppy
+\hyphenpenalty=500
+\exhyphenpenalty=50
+
+% Keine Überschriften am Ende der Seite
+\usepackage{needspace}
+\let\oldsection\section
+\renewcommand{\section}{\needspace{5\baselineskip}\oldsection}
+
+% Zitate
+\usepackage[
+backend=bibtex,
+style=authoryear	%hier: Chicago
+]{biblatex}
+\addbibresource{/home/marcel/references.bib}	%.bib datei
+% Für Kurzzitate, wie z.B. Wittgenstein oder Aristoteles
+\DeclareCiteCommand{\shortcite}[\mkbibparens]
+{\usebibmacro{prenote}}
+{\printfield{shorttitle}}
+{\multicitedelim}
+{\addspace\printfield{postnote}}
+\DeclareFieldFormat{postnote}{#1} %entfernt p. vor Seitenzahl
+
+% Seitenlayout
+\usepackage[a4paper, left=2.54cm, right=2.54cm, top=2.54cm, bottom=2.54cm]{geometry}
+
+% 1,5 Zeilen Abstand
+\usepackage{setspace}
+\setstretch{1.5}
+
+\setlength{\parindent}{0pt} % Kein Einzug am Anfang des Absatzes
+\setlength{\parskip}{6pt} % Abstand zwischen Absätzen
+
+% Formatierung der Kopf- und Fußzeile
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Styling der Überschriften
+\usepackage{titlesec}
+\titleformat{\section}
+{\normalfont\Large\bfseries}{\thesection.}{1em}{}
+\titleformat{\subsection}
+{\normalfont\large\bfseries}{\thesubsection.}{1em}{}
+\titleformat{\subsubsection}
+{\normalfont\normalsize\bfseries}{\thesubsubsection.}{1em}{}
+\titlespacing*{\section}{0pt}{1.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsection}{0pt}{1\baselineskip}{0.25\baselineskip}
+
+% Inhaltsverzeichnis
+\usepackage{tocloft}
+% Abstand unter "Inhaltsverzeichnis" wie bei normalen Sections
+\renewcommand{\cftaftertoctitle}{\par\vspace{0.5\baselineskip}}
+
+% Schrift wie im Dokument
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsubsecfont}{\normalfont}
+\renewcommand{\cftsubsubsecfont}{\normalfont}
+
+% Seitenzahlen nicht fett
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+\renewcommand{\cftsubsubsecpagefont}{\normalfont}
+
+% Punktlinien zwischen Titel und Seitenzahl (klassischer Word-Stil)
+\renewcommand{\cftdotsep}{1}
+% Einheitliches Punktlinien-Verhalten für alle Ebenen
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
+
+% Abstände zwischen Einträgen
+\setlength{\cftbeforesecskip}{2pt}
+\setlength{\cftbeforesubsecskip}{2pt}
+\setlength{\cftbeforesubsubsecskip}{2pt}
+
+% Einrückungen (Hierarchie)
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{1.5em}
+\setlength{\cftsubsubsecindent}{3em}
+
+% Nummernbreiten
+\setlength{\cftsecnumwidth}{1.8em}
+\setlength{\cftsubsecnumwidth}{2.6em}
+\setlength{\cftsubsubsecnumwidth}{3.4em}
+
+% Punkt nach der Nummer im Inhaltsverzeichnis
+\renewcommand{\cftsecaftersnum}{.}
+\renewcommand{\cftsubsecaftersnum}{.}
+\renewcommand{\cftsubsubsecaftersnum}{.}
+
+% Überschrift "Inhaltsverzeichnis" wie eine Section
+\renewcommand{\cfttoctitlefont}{\Large\bfseries}
+\renewcommand{\cftaftertoctitle}{\par\vspace{1\baselineskip}}
+
+% Für eingerückte Blockzitate
+\usepackage{csquotes}
+\renewenvironment{displayquote}
+{\list{}{\leftmargin=1.5cm \rightmargin=1.5cm}\item\relax}
+{\endlist}
