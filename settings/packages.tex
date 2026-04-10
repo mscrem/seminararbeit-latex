@@ -1,48 +1,83 @@
-% packages.tex
+% packages.tex – Word-kompatible Formatierung (TNR 12pt)
+% Kompiler: XeLaTeX
+%
+% Ziel: Maximale Annäherung an Word mit klassischer TNR-Konfiguration.
+% Unvermeidliche Abweichungen sind am Ende dieser Datei dokumentiert.
 
-% Sprache 'english', 'ngerman', ...
+% ──────────────────────────────────────────────
+% Sprache & Schrift
+% ──────────────────────────────────────────────
+% babel: breiteste Paketkompatibilität, aktiv gepflegt, funktioniert
+% einwandfrei mit XeLaTeX. ngerman = neue Rechtschreibung.
+% Silbentrennung ist AKTIV (bewusste Abweichung von Word, das sie
+% standardmäßig deaktiviert hat).
 \usepackage[ngerman]{babel}
 
-% Schriftart
 \usepackage{fontspec}
 \setmainfont{Times New Roman}
 
-% Bessere Absatzformatierung
+% Mikrotypographie – Randausgleich, Ligaturen etc.
 \usepackage{microtype}
-\sloppy
 \hyphenpenalty=500
 \exhyphenpenalty=50
+\tolerance=400
 
-% Keine Überschriften am Ende der Seite
-\usepackage{needspace}
-\let\oldsection\section
-\renewcommand{\section}{\needspace{5\baselineskip}\oldsection}
+% Witwen-/Waisenzeilen verhindern
+\widowpenalty=10000
+\clubpenalty=10000
 
-% Zitate
+% ──────────────────────────────────────────────
+% Zitate & Literatur
+% ──────────────────────────────────────────────
+\usepackage{csquotes}           % vor biblatex laden
 \usepackage[
-backend=bibtex,
-style=authoryear	%hier: Chicago
+  backend=biber,
+  style=authoryear                % Chicago
 ]{biblatex}
-\addbibresource{/home/marcel/references.bib}	%.bib datei
+\addbibresource{/home/marcel/references.bib}
+
 % Für Kurzzitate, wie z.B. Wittgenstein oder Aristoteles
 \DeclareCiteCommand{\shortcite}[\mkbibparens]
-{\usebibmacro{prenote}}
-{\printfield{shorttitle}}
-{\multicitedelim}
-{\addspace\printfield{postnote}}
-\DeclareFieldFormat{postnote}{#1} %entfernt p. vor Seitenzahl
+  {\usebibmacro{prenote}}
+  {\printfield{shorttitle}}
+  {\multicitedelim}
+  {\addspace\printfield{postnote}}
+\DeclareFieldFormat{postnote}{#1} % entfernt p. vor Seitenzahl
 
-% Seitenlayout
-\usepackage[a4paper, left=2.54cm, right=2.54cm, top=2.54cm, bottom=2.54cm]{geometry}
+% ──────────────────────────────────────────────
+% Seitenlayout – Word „Normal" = 2,54 cm rundum
+% ──────────────────────────────────────────────
+% footskip: Word-Footer bei 1,25 cm vom Blattrand
+%   → footskip = bottom − footer_pos = 2,54 − 1,25 = 1,29 cm
+\usepackage[
+  a4paper,
+  top=2.54cm,
+  bottom=2.54cm,
+  left=2.54cm,
+  right=2.54cm,
+  headheight=14.5pt,
+  footskip=1.29cm
+]{geometry}
 
-% 1,5 Zeilen Abstand
+% ──────────────────────────────────────────────
+% Zeilenabstand
+% ──────────────────────────────────────────────
+% Word „1,5 Zeilen" bei TNR 12pt = 12 × 1,2 × 1,5 = 21,6pt
+% LaTeX: \baselineskip 14,5pt × 1,5 = 21,75pt (Δ +0,15pt ≈ 0,05mm)
+% ACHTUNG: \onehalfspacing wäre nur Faktor 1,25 → ~18pt – NICHT
+% äquivalent zu Word und deshalb hier explizit NICHT verwendet!
 \usepackage{setspace}
 \setstretch{1.5}
 
-\setlength{\parindent}{0pt} % Kein Einzug am Anfang des Absatzes
-\setlength{\parskip}{6pt} % Abstand zwischen Absätzen
+% ──────────────────────────────────────────────
+% Absatzformatierung
+% ──────────────────────────────────────────────
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt plus 0pt minus 0pt}   % Word-Default seit 2007
 
-% Formatierung der Kopf- und Fußzeile
+% ──────────────────────────────────────────────
+% Kopf- und Fußzeile
+% ──────────────────────────────────────────────
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
@@ -50,23 +85,55 @@ style=authoryear	%hier: Chicago
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
-% Styling der Überschriften
+% ──────────────────────────────────────────────
+% Überschriften – exakte Word-TNR-Konfiguration
+% ──────────────────────────────────────────────
+% \fontsize{X}{Y}: X = Schriftgröße, Y = Baseline-Abstand (= X × 1,2)
+% \linespread{1.0}\selectfont setzt den globalen Stretch (1,5) innerhalb
+% der Überschrift auf 1,0 zurück, damit mehrzeilige Überschriften den
+% richtigen Zeilenabstand haben. Word behandelt Headings ebenso.
 \usepackage{titlesec}
+
+% h1 = \section: 16pt fett, 12pt davor, 6pt danach
 \titleformat{\section}
-{\normalfont\Large\bfseries}{\thesection.}{1em}{}
+  {\normalfont\fontsize{16}{19.2}\linespread{1.0}\selectfont\bfseries}
+  {\thesection.}{1em}{}
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+
+% h2 = \subsection: 14pt fett, 10pt davor, 6pt danach
 \titleformat{\subsection}
-{\normalfont\large\bfseries}{\thesubsection.}{1em}{}
+  {\normalfont\fontsize{14}{16.8}\linespread{1.0}\selectfont\bfseries}
+  {\thesubsection.}{1em}{}
+\titlespacing*{\subsection}{0pt}{10pt}{6pt}
+
+% h3 = \subsubsection: 13pt fett, 8pt davor, 4pt danach
 \titleformat{\subsubsection}
-{\normalfont\normalsize\bfseries}{\thesubsubsection.}{1em}{}
-\titlespacing*{\section}{0pt}{1.5\baselineskip}{0.5\baselineskip}
-\titlespacing*{\subsection}{0pt}{1\baselineskip}{0.25\baselineskip}
+  {\normalfont\fontsize{13}{15.6}\linespread{1.0}\selectfont\bfseries}
+  {\thesubsubsection.}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{4pt}
 
-% Inhaltsverzeichnis
+% ──────────────────────────────────────────────
+% Fußnoten: 10pt, einzeilig
+% ──────────────────────────────────────────────
+% \footnotesize ist in der 12pt-Klasse bereits 10pt.
+% Einzeilig (\singlespacing) überschreibt den globalen 1,5-Stretch.
+% Trennlinie: LaTeX-Default (~⅓ Spaltenbreite) ≈ Word (~5 cm).
+\makeatletter
+\renewcommand{\@makefntext}[1]{%
+  \noindent\hb@xt@1.8em{\hss\@makefnmark}%
+  {\singlespacing #1}}
+\makeatother
+
+% ──────────────────────────────────────────────
+% Inhaltsverzeichnis (tocloft)
+% ──────────────────────────────────────────────
 \usepackage{tocloft}
-% Abstand unter "Inhaltsverzeichnis" wie bei normalen Sections
-\renewcommand{\cftaftertoctitle}{\par\vspace{0.5\baselineskip}}
 
-% Schrift wie im Dokument
+% Überschrift „Inhaltsverzeichnis" wie \section (16pt fett)
+\renewcommand{\cfttoctitlefont}{\fontsize{16}{19.2}\selectfont\bfseries}
+\renewcommand{\cftaftertoctitle}{\par\vspace{6pt}}
+
+% Schrift wie im Dokument (nicht fett)
 \renewcommand{\cftsecfont}{\normalfont}
 \renewcommand{\cftsubsecfont}{\normalfont}
 \renewcommand{\cftsubsubsecfont}{\normalfont}
@@ -76,9 +143,8 @@ style=authoryear	%hier: Chicago
 \renewcommand{\cftsubsecpagefont}{\normalfont}
 \renewcommand{\cftsubsubsecpagefont}{\normalfont}
 
-% Punktlinien zwischen Titel und Seitenzahl (klassischer Word-Stil)
+% Punktlinien zwischen Titel und Seitenzahl (Word-Stil)
 \renewcommand{\cftdotsep}{1}
-% Einheitliches Punktlinien-Verhalten für alle Ebenen
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
@@ -98,17 +164,38 @@ style=authoryear	%hier: Chicago
 \setlength{\cftsubsecnumwidth}{2.6em}
 \setlength{\cftsubsubsecnumwidth}{3.4em}
 
-% Punkt nach der Nummer im Inhaltsverzeichnis
+% Punkt nach der Nummer
 \renewcommand{\cftsecaftersnum}{.}
 \renewcommand{\cftsubsecaftersnum}{.}
 \renewcommand{\cftsubsubsecaftersnum}{.}
 
-% Überschrift "Inhaltsverzeichnis" wie eine Section
-\renewcommand{\cfttoctitlefont}{\Large\bfseries}
-\renewcommand{\cftaftertoctitle}{\par\vspace{1\baselineskip}}
+% ──────────────────────────────────────────────
+% Listen
+% ──────────────────────────────────────────────
+\usepackage{enumitem}
+\setlist{itemsep=4pt, parsep=0pt, topsep=4pt}
 
-% Für eingerückte Blockzitate
-\usepackage{csquotes}
+% ──────────────────────────────────────────────
+% Hyperlinks – alles schwarz, keine Rahmen
+% ──────────────────────────────────────────────
+\usepackage[hidelinks]{hyperref}
+\hypersetup{colorlinks=false, allcolors=black}
+
+% ──────────────────────────────────────────────
+% Blockzitate – nur links eingerückt (dt. wiss. Standard)
+% ──────────────────────────────────────────────
+% 1,27 cm = 0,5 Zoll = Word-Standard-Einrückung
 \renewenvironment{displayquote}
-{\list{}{\leftmargin=1.5cm \rightmargin=1.5cm}\item\relax}
-{\endlist}
+  {\list{}{\leftmargin=1.27cm \rightmargin=0cm}\item\relax}
+  {\endlist}
+
+% ──────────────────────────────────────────────
+% BEKANNTE ABWEICHUNGEN VON WORD
+% ──────────────────────────────────────────────
+% 1. Zeilenumbrüche: Word nutzt Greedy-Algorithmus, LaTeX Knuth-Plass
+%    (optimal) → unterschiedliche Umbruchstellen bei langen Absätzen.
+% 2. Baseline-Abstand: Word 21,6pt vs. LaTeX 21,75pt (Δ +0,15pt).
+% 3. Silbentrennung: Hier aktiv, bei Word standardmäßig aus.
+% 4. Schriftmetriken/Hinting: Minimale Laufweitenunterschiede durch
+%    unterschiedliche Rendering-Engines.
+% 5. Fußnotentrennlinie: LaTeX ~⅓ Spaltenbreite vs. Word ~5 cm.

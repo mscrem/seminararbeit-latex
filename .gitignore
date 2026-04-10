@@ -1,0 +1,33 @@
+# LaTeX Hilfsdateien
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+
+# Biber / BibTeX
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+
+# Pakete (titlesec, hyperref, etc.)
+*.nav
+*.snm
+*.vrb
+
+# PDF (wird kompiliert, nicht versioniert)
+*.pdf
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp
+*.swo
+*~
