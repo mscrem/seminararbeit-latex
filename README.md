@@ -35,7 +35,7 @@ Unter `\addbibresource{.../.bib}` muss die jeweilige .bib-Datei mit der Literatu
 Es wurde eine Funktion für „Kurzzitate" erstellt, z.B. für Aristoteles oder Wittgenstein. Im Text wird `\shortcite` verwendet. In der .bib-Datei muss dafür ein Attribut angegeben werden:
 
 ```bibtex
-shorttitle = {Arist. De an.}
+shorthand = {Arist. De an.}
 ```
 
 ### Zitierweise

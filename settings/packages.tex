@@ -32,17 +32,26 @@
 \usepackage{csquotes}           % vor biblatex laden
 \usepackage[
   backend=biber,
-  style=authoryear                % Chicago
+  style=authoryear,             % Chicago
+  mincrossrefs=99               % Unterdrücken von redundanten Einträgen
 ]{biblatex}
-\addbibresource{/home/marcel/references.bib}
+\addbibresource{/home/marcel/references.bib} %Literatur-Datei
 
 % Für Kurzzitate, wie z.B. Wittgenstein oder Aristoteles
 \DeclareCiteCommand{\shortcite}[\mkbibparens]
   {\usebibmacro{prenote}}
-  {\printfield{shorttitle}}
+  {\printfield{shorthand}}
   {\multicitedelim}
   {\addspace\printfield{postnote}}
 \DeclareFieldFormat{postnote}{#1} % entfernt p. vor Seitenzahl
+
+% Siglen am Ende vom Eintrag im Literaturverzeichnis
+\renewbibmacro*{finentry}{%
+  \finentry
+  \iffieldundef{shorthand}
+    {}
+    {\addspace[\thefield{shorthand}]}%
+}
 
 % ──────────────────────────────────────────────
 % Seitenlayout – Word „Normal" = 2,54 cm rundum
